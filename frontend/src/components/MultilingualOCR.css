@@ -1,0 +1,96 @@
+/* Main container for OCR */
+.ocr-container {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    padding: 3rem 2rem;
+    width: 80vw;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ocr-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+.ocr-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 500px;
+}
+
+.ocr-label {
+    font-size: 1.125rem;
+    color: #555;
+}
+
+.ocr-input,
+.ocr-select {
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+    outline: none;
+}
+
+.ocr-input:focus,
+.ocr-select:focus {
+    border-color: #059669;
+}
+
+.ocr-btn {
+    background-color: #059669;
+    color: #fff;
+    padding: 1rem;
+    font-size: 1.125rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.ocr-btn:hover {
+    background-color: #047857;
+}
+
+.ocr-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.ocr-error {
+    color: #ff0000;
+    margin-top: 1rem;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.ocr-result {
+    margin-top: 2rem;
+    width: 100%;
+    padding: 1rem;
+    background-color: #f9fafb;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.ocr-result h3 {
+    font-size: 1.25rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.ocr-result pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    color: #333;
+    font-size: 1rem;
+}

@@ -1,20 +1,15 @@
-import React from "react";
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import Features from "./components/Features";
-import UseCases from "./components/UseCases";
-import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./components/Home";
+import MultilingualOCR from "./components/MultilingualOCR";
 
 function App() {
     return (
-        <>
-            <Header />
-            <main>
-                <Hero />
-                <Features />
-                <UseCases />
-            </main>
-        </>
+        <Router>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/ocr" element={<MultilingualOCR />} />
+            </Routes>
+        </Router>
     );
 }
 
