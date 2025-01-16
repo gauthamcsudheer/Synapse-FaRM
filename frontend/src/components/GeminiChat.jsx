@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
+import ReactMarkdown from "react-markdown";
 import "./GeminiChat.css";
 
 const GeminiChat = ({ extractedText }) => {
   const [userMessage, setUserMessage] = useState("");
   const [chatbotMessages, setChatbotMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false); // Loading state
 
   const handleSendMessage = async () => {
     if (userMessage.trim() === "") return;
@@ -14,6 +16,7 @@ const GeminiChat = ({ extractedText }) => {
       { sender: "user", message: userMessage },
     ]);
     setUserMessage("");
+    setIsLoading(true); // Start loading
 
     try {
       const response = await axios.post(
@@ -36,8 +39,10 @@ const GeminiChat = ({ extractedText }) => {
         ...prevMessages,
         { sender: "chatbot", message: geminiMessage },
       ]);
+      setIsLoading(false); // Stop loading when response is received
     } catch (error) {
       console.error("Error fetching Gemini response:", error);
+      setIsLoading(false); // Stop loading in case of error
     }
   };
 
@@ -49,9 +54,20 @@ const GeminiChat = ({ extractedText }) => {
             key={index}
             className={`message ${msg.sender === "user" ? "user-message" : "chatbot-message"}`}
           >
-            {msg.message}
+            {msg.sender === "chatbot" ? (
+              <ReactMarkdown>{msg.message}</ReactMarkdown>
+            ) : (
+              msg.message
+            )}
           </div>
         ))}
+        {isLoading && (
+          <div className="loading-indicator">
+            <span>.</span>
+            <span>.</span>
+            <span>.</span>
+          </div>
+        )}
       </div>
       <div className="chat-input">
         <input
