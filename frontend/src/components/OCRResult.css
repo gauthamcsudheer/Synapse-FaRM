@@ -1,0 +1,28 @@
+.ocr-result-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .ocr-result-textarea {
+    margin-top: 10px;
+    width: 80%;
+    font-size: 16px;
+    padding: 10px;
+  }
+  
+  .back-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .back-button:hover {
+    background-color: #0056b3;
+  }
+  

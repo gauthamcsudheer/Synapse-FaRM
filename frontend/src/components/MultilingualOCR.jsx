@@ -1,84 +1,62 @@
-import React, { useState } from 'react';
-import './MultilingualOCR.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./MultilingualOCR.css";
 
 const MultilingualOCR = () => {
-    const [file, setFile] = useState(null);
-    const [language, setLanguage] = useState('eng');
-    const [ocrResult, setOcrResult] = useState('');
-    const [error, setError] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+  const [file, setFile] = useState(null);
+  const [language, setLanguage] = useState("eng");
+  const navigate = useNavigate();
 
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!file) {
+      alert("Please upload a file!");
+      return;
+    }
 
-    const handleLanguageChange = (e) => {
-        setLanguage(e.target.value);
-    };
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("language", language);
 
-    const handleExtract = async () => {
-        if (!file) {
-            setError('Please select an image or PDF.');
-            return;
-        }
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('language', language);
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/ocr", {
+        method: "POST",
+        body: formData,
+      });
 
-        setIsLoading(true);
-        setError('');
-        setOcrResult('');
+      const data = await response.json();
+      if (data.text) {
+        navigate("/ocr-result", { state: { result: data.text } }); // Redirect to the result page
+      } else {
+        alert("Error: " + (data.error || "Failed to extract text."));
+      }
+    } catch (err) {
+      alert("Error: " + err.message);
+    }
+  };
 
-        try {
-            const response = await fetch('http://localhost:8000/api/ocr', {
-                method: 'POST',
-                body: formData,
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                setOcrResult(data.text);
-            } else {
-                const data = await response.json();
-                setError(data.error || 'Something went wrong.');
-            }
-        } catch (error) {
-            setError('Error: ' + error.message);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    return (
-        <div className="ocr-container">
-            <h1 className="ocr-title">Multilingual OCR</h1>
-            <div className="ocr-form">
-                <div className="ocr-file-input">
-                    <label htmlFor="file" className="ocr-label">Select an Image or PDF</label>
-                    <input type="file" accept="image/*,.pdf" onChange={handleFileChange} className="ocr-input" />
-                </div>
-                <div className="ocr-language-select">
-                    <label htmlFor="language" className="ocr-label">Choose Language</label>
-                    <select value={language} onChange={handleLanguageChange} className="ocr-select">
-                        <option value="eng">English</option>
-                        <option value="spa">Spanish</option>
-                        <option value="fra">French</option>
-                        {/* Add more languages */}
-                    </select>
-                </div>
-                <button onClick={handleExtract} className="ocr-btn" disabled={isLoading}>
-                    {isLoading ? 'Extracting...' : 'Extract Text'}
-                </button>
-            </div>
-            {error && <div className="ocr-error">{error}</div>}
-            {ocrResult && (
-                <div className="ocr-result">
-                    <h3>OCR Result:</h3>
-                    <pre>{ocrResult}</pre>
-                </div>
-            )}
-        </div>
-    );
+  return (
+    <div className="ocr-container">
+      <h2>Multilingual OCR</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="file"
+          accept="image/*,application/pdf"
+          onChange={(e) => setFile(e.target.files[0])}
+        />
+        <select
+          value={language}
+          onChange={(e) => setLanguage(e.target.value)}
+        >
+          <option value="eng">English</option>
+          <option value="spa">Spanish</option>
+          <option value="fra">French</option>
+          {/* Add more languages as needed */}
+        </select>
+        <button type="submit">Extract</button>
+      </form>
+    </div>
+  );
 };
 
 export default MultilingualOCR;
