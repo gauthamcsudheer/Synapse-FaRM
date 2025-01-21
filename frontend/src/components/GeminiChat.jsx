@@ -19,9 +19,13 @@ const GeminiChat = ({ extractedText }) => {
     setUserMessage("");
     setIsLoading(true);
 
+    // Print API key for debugging purposes
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY; // Correct access
+
     try {
+
       const response = await axios.post(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=MY_API_KEY",
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
         {
           contents: [
             {
