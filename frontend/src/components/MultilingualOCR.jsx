@@ -5,6 +5,7 @@ import "./MultilingualOCR.css";
 const MultilingualOCR = () => {
   const [file, setFile] = useState(null);
   const [language, setLanguage] = useState("eng");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -14,6 +15,7 @@ const MultilingualOCR = () => {
       return;
     }
 
+    setIsLoading(true);
     const formData = new FormData();
     formData.append("file", file);
     formData.append("language", language);
@@ -32,28 +34,49 @@ const MultilingualOCR = () => {
       }
     } catch (err) {
       alert("Error: " + err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="ocr-container">
-      <h2>Multilingual OCR</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="file"
-          accept="image/*,application/pdf"
-          onChange={(e) => setFile(e.target.files[0])}
-        />
-        <select
-          value={language}
-          onChange={(e) => setLanguage(e.target.value)}
-        >
-          <option value="eng">English</option>
-          <option value="spa">Spanish</option>
-          <option value="fra">French</option>
-          {/* Add more languages as needed */}
-        </select>
-        <button type="submit">Extract</button>
+      <h2 className="ocr-title">Multilingual OCR</h2>
+      <p className="ocr-description">
+        Upload an image or PDF, select a language, and extract the text instantly.
+      </p>
+      <form className="ocr-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="file" className="form-label">
+            Upload File
+          </label>
+          <input
+            id="file"
+            type="file"
+            accept="image/*,application/pdf"
+            className="form-input"
+            onChange={(e) => setFile(e.target.files[0])}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="language" className="form-label">
+            Select Language
+          </label>
+          <select
+            id="language"
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+            className="form-input"
+          >
+            <option value="eng">English</option>
+            <option value="spa">Spanish</option>
+            <option value="fra">French</option>
+            {/* Add more languages as needed */}
+          </select>
+        </div>
+        <button type="submit" className="submit-button" disabled={isLoading}>
+          {isLoading ? <span className="spinner"></span> : "Extract Text"}
+        </button>
       </form>
     </div>
   );

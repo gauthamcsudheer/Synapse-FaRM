@@ -1,13 +1,15 @@
 // src/components/Home.jsx
 import React from 'react';
-import Hero from './Hero'; // Assuming Hero component exists
-import Features from './Features'; // Assuming Features component exists
-import UseCases from './UseCases'; // Assuming UseCases component exists
+import Header from './Header'
+import Hero from './Hero';
+import Features from './Features'; 
+import UseCases from './UseCases';
 import './Home.css';
 
 const Home = () => {
     return (
         <div>
+            <Header />
             <Hero />
             <Features />
             <UseCases />
