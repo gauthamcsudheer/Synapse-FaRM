@@ -2,11 +2,11 @@
 .ocr-result-page {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Full height of the viewport */
-  width: 100vw; /* Full width of the viewport */
+  height: 100vh;
+  width: 100vw;
   font-family: "Arial", sans-serif;
   background: #f4f4f4;
-  overflow: hidden; /* Prevent page scroll */
+  overflow: hidden;
 }
 
 .ocr-result-header {
@@ -14,7 +14,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background: #139e66; /* Green theme */
+  background: #139e66;
   color: #fff;
 }
 
@@ -26,7 +26,7 @@
 .back-button {
   padding: 10px 20px;
   background: #fff;
-  color: #139e66; /* Green text */
+  color: #139e66;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -35,7 +35,7 @@
 }
 
 .back-button:hover {
-  background: #059169; /* Darker green */
+  background: #059169;
   color: #fff;
 }
 
@@ -44,11 +44,12 @@
   flex: 1;
   gap: 20px;
   padding: 20px;
-  overflow: hidden; /* Prevent content overflow */
+  overflow: hidden;
 }
 
+/* Extracted Text Section */
 .extracted-text-section {
-  flex: 1; /* Remaining space */
+  flex: 1;
   display: flex;
   flex-direction: column;
   background: #fff;
@@ -58,8 +59,24 @@
   overflow: hidden;
 }
 
+.ocr-text-container {
+  flex: 1;
+  background: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  font-family: monospace;
+  font-size: 14px;
+  color: #333;
+  overflow-y: auto;
+  max-height: 800px; /* Ensures scrollability */
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Chat Section */
 .chat-section {
-  width: 600px; /* Fixed width for the chat section */
+  width: 600px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -72,28 +89,8 @@
 
 h2 {
   font-size: 20px;
-  color: #047857; /* Green heading text */
+  color: #047857;
   margin-bottom: 15px;
-}
-
-/* Scrollable text area */
-.ocr-result-textarea {
-  flex: 1;
-  width: 100%;
-  font-family: "Courier New", Courier, monospace;
-  font-size: 14px;
-  color: #333;
-  background: #f7f7f7;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 10px;
-  resize: none; /* Disable resizing */
-  overflow-y: auto; /* Scroll for overflow */
-}
-
-.ocr-result-textarea:focus {
-  border-color: #139e66; /* Green border on focus */
-  outline: none;
 }
 
 /* Responsive Design */
@@ -103,10 +100,10 @@ h2 {
   }
 
   .chat-section {
-    width: 100%; /* Full width on small screens */
+    width: 100%;
   }
 
-  .ocr-result-textarea {
-    height: 200px; /* Adjust height for smaller screens */
+  .ocr-text-container {
+    max-height: 250px;
   }
 }

@@ -1,6 +1,7 @@
+/* Main Container */
 .ocr-container {
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 700px;
+  margin: 2rem auto;
   padding: 20px;
   background: #f8f9fa;
   border-radius: 10px;
@@ -8,8 +9,9 @@
   text-align: center;
 }
 
+/* Title & Description */
 .ocr-title {
-  font-size: 24px;
+  font-size: 26px;
   font-weight: bold;
   color: #333;
   margin-bottom: 10px;
@@ -21,11 +23,12 @@
   margin-bottom: 20px;
 }
 
+/* Form Styling */
 .ocr-form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
 }
 
 .form-group {
@@ -47,6 +50,7 @@
   font-size: 14px;
   border: 1px solid #ddd;
   border-radius: 5px;
+  transition: border-color 0.3s ease;
 }
 
 .form-input:hover,
@@ -55,20 +59,22 @@
   outline: none;
 }
 
+/* Button Styles */
 .submit-button {
-  padding: 10px 20px;
+  padding: 12px 24px;
   font-size: 16px;
   font-weight: bold;
   color: #fff;
   background: #007bff;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, transform 0.2s ease-in-out;
 }
 
 .submit-button:hover {
   background: #0056b3;
+  transform: scale(1.05);
 }
 
 .submit-button:disabled {
@@ -76,15 +82,81 @@
   cursor: not-allowed;
 }
 
+/* Extracted History Section - Full Width */
+.extracted-history {
+  width: 90vw;
+  background: #f1f1f1;
+  padding: 20px;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.extracted-history h3 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* Card Layout for Extracted Texts */
+.ocr-cards-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+  gap: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+/* Individual Card */
+.ocr-card {
+  background: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+  text-align: left;
+}
+
+.ocr-card:hover {
+  transform: scale(1.03);
+}
+
+.ocr-card-text {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* View Button */
+.ocr-view-button {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  background: #28a745;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.ocr-view-button:hover {
+  background: #218838;
+}
+
 .spinner {
-  width: 16px;
-  height: 16px;
+  display: inline-block; /* Ensures it's visible */
+  width: 18px;
+  height: 18px;
   border: 3px solid rgba(255, 255, 255, 0.6);
-  border-top: 3px solid #ffffff;
+  border-top: 3px solid #ffffff; /* White for contrast */
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
-  display: inline-block;
   vertical-align: middle;
+  margin-right: 8px; /* Adds spacing when next to text */
 }
 
 @keyframes spin {
@@ -95,4 +167,3 @@
     transform: rotate(360deg);
   }
 }
-

@@ -1,19 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import GeminiChat from "./GeminiChat"; // Assuming GeminiChat is in the same directory
+import GeminiChat from "./GeminiChat";
 import "./OCRResult.css";
 
 const OCRResult = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { result } = location.state || { result: "" }; // Handle missing state
-  const [chatbotResponse, setChatbotResponse] = useState("");
+  const { result, id } = location.state || { result: "", id: null };
+
+  const [extractedTexts, setExtractedTexts] = useState(() => {
+    return JSON.parse(localStorage.getItem("ocrHistory")) || [];
+  });
 
   useEffect(() => {
-    if (result) {
-      setChatbotResponse("I am ready to assist with the extracted text.");
+    if (result && id) {
+      const exists = extractedTexts.some((entry) => entry.id === id);
+      if (!exists) {
+        const newExtractedText = { id, text: result };
+        const updatedTexts = [newExtractedText, ...extractedTexts];
+
+        setExtractedTexts(updatedTexts);
+        localStorage.setItem("ocrHistory", JSON.stringify(updatedTexts));
+      }
     }
-  }, [result]);
+  }, [result, id]);
 
   return (
     <div className="ocr-result-page">
@@ -26,16 +36,14 @@ const OCRResult = () => {
       <div className="ocr-result-content">
         <div className="extracted-text-section">
           <h2>Extracted Text</h2>
-          <textarea
-            value={result}
-            readOnly
-            className="ocr-result-textarea"
-            placeholder="No text extracted"
-          />
+          <div className="ocr-text-container">
+            <pre>{result}</pre>
+          </div>
         </div>
+
         <div className="chat-section">
           <h2>Chat With Your Document</h2>
-          <GeminiChat extractedText={result} />
+          <GeminiChat extractedText={result} docId={id} />
         </div>
       </div>
     </div>
