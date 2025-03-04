@@ -160,3 +160,35 @@
 .chatbot-message tr:nth-child(even) {
   background-color: #f9f9f9;
 }
+
+/* Chatbot response container */
+.chatbot-response {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+/* Speaker button */
+.tts-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.2s ease-in-out;
+  padding: 3px;
+}
+
+.tts-button:hover {
+  color: #139e66;
+}
+
+/* Change color when speaking */
+.tts-button.active {
+  color: #047857;
+}
+
+/* Ensure markdown text stays aligned properly */
+.chatbot-response > div {
+  flex: 1;
+}

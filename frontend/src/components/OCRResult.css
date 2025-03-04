@@ -91,6 +91,34 @@ h2 {
   font-size: 20px;
   color: #047857;
   margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+/* Ensure Extracted Text header and button align */
+.extracted-text-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Speaker Button */
+.tts-button {
+  margin-left: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.3s ease;
+}
+
+.tts-button:hover {
+  opacity: 0.7;
+}
+
+.tts-button .active {
+  color: #047857;
 }
 
 /* Responsive Design */

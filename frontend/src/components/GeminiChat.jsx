@@ -2,21 +2,20 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { Volume2 } from "lucide-react"; // Speaker Icon
 import "./GeminiChat.css";
 
 const GeminiChat = ({ extractedText, docId }) => {
   const [userMessage, setUserMessage] = useState("");
   const [chatbotMessages, setChatbotMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [speakingMessage, setSpeakingMessage] = useState(null); // Track speaking message
 
   useEffect(() => {
     if (!docId) return;
 
     const chatKey = `chatHistory_${docId}`;
     const storedChat = JSON.parse(localStorage.getItem(chatKey)) || [];
-
-    console.log("Loaded chat history:", storedChat); // Debugging log
-
     setChatbotMessages(storedChat);
   }, [docId]);
 
@@ -24,7 +23,6 @@ const GeminiChat = ({ extractedText, docId }) => {
     if (!docId || chatbotMessages.length === 0) return;
 
     const chatKey = `chatHistory_${docId}`;
-    console.log("Saving chat history:", chatbotMessages); // Debugging log
     localStorage.setItem(chatKey, JSON.stringify(chatbotMessages));
   }, [chatbotMessages, docId]);
 
@@ -54,11 +52,9 @@ const GeminiChat = ({ extractedText, docId }) => {
       const botResponse =
         response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response received.";
 
-      console.log("Bot Response:", botResponse); // Debugging log
-
       const updatedMessages = [...newMessages, { sender: "chatbot", message: botResponse }];
       setChatbotMessages(updatedMessages);
-      localStorage.setItem(`chatHistory_${docId}`, JSON.stringify(updatedMessages)); // Ensure sync update
+      localStorage.setItem(`chatHistory_${docId}`, JSON.stringify(updatedMessages));
     } catch (error) {
       console.error("Error fetching response:", error);
       setChatbotMessages([
@@ -83,6 +79,50 @@ const GeminiChat = ({ extractedText, docId }) => {
     }
   };
 
+  const handleSpeak = (text) => {
+    if (speakingMessage === text) {
+      // If the same message is currently being spoken, stop it
+      window.speechSynthesis.cancel();
+      setSpeakingMessage(null);
+      return;
+    }
+  
+    // Stop any ongoing speech before starting a new one
+    window.speechSynthesis.cancel();
+    setSpeakingMessage(text);
+  
+    const speakText = () => {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 1.2; // Adjust speed
+  
+      // Ensure voices are available
+      const voices = window.speechSynthesis.getVoices();
+      const selectedVoice = voices.find(v => v.name.includes("Google UK English Female"));
+  
+      if (selectedVoice) {
+        utterance.voice = selectedVoice;
+      } else {
+        console.warn("Preferred voice not found. Using default voice.");
+      }
+  
+      // Start speech
+      window.speechSynthesis.speak(utterance);
+  
+      utterance.onend = () => setSpeakingMessage(null);
+      utterance.onerror = (err) => {
+        console.error("Speech synthesis error:", err);
+        setSpeakingMessage(null);
+      };
+    };
+  
+    // If voices are not available yet, wait for them to load
+    if (window.speechSynthesis.getVoices().length === 0) {
+      window.speechSynthesis.onvoiceschanged = speakText;
+    } else {
+      speakText();
+    }
+  };
+  
   return (
     <div className="gemini-chat-container">
       <div className="chat-messages">
@@ -92,7 +132,12 @@ const GeminiChat = ({ extractedText, docId }) => {
           chatbotMessages.map((msg, index) => (
             <div key={index} className={`message ${msg.sender === "user" ? "user-message" : "chatbot-message"}`}>
               {msg.sender === "chatbot" ? (
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.message}</ReactMarkdown>
+                <div className="chatbot-response">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.message}</ReactMarkdown>
+                  <button className="tts-button" onClick={() => handleSpeak(msg.message)}>
+                    <Volume2 size={16} className={speakingMessage === msg.message ? "active" : ""} />
+                  </button>
+                </div>
               ) : (
                 msg.message
               )}
