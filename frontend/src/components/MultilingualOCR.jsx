@@ -79,7 +79,7 @@ const MultilingualOCR = () => {
             >
               <option value="eng">English</option>
               <option value="spa">Spanish</option>
-              <option value="fra">French</option>
+              <option value="mal">Malayalam</option>
             </select>
           </div>
           <button type="submit" className="submit-button" disabled={isLoading}>
