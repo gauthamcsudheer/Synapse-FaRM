@@ -7,6 +7,7 @@ export default defineConfig({
   server: {
     port: 5173,
     open: true,
+    historyApiFallback: true,
   },
   build: {
     outDir: 'dist',
@@ -15,9 +16,5 @@ export default defineConfig({
     alias: {
       '@': '/src',
     },
-  },
-  // Add this configuration for SPA fallback
-  server: {
-    historyApiFallback: true,
   },
 });
