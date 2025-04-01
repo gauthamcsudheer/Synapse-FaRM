@@ -136,7 +136,25 @@ const GeminiChat = ({ extractedText, docId }) => {
     <div className="gemini-chat-container">
       <div className="chat-messages">
         {chatbotMessages.length === 0 ? (
-          <p className="empty-chat">No messages yet. Start the conversation!</p>
+          <div className="message chatbot-message">
+            <div className="chatbot-response">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {`👋 Hello! I'm SynapseAI, and I'm here to help you understand and analyze the extracted text. Here's what I can do for you:
+
+* Ask me questions about the text
+* Request a summary of the content
+* Get explanations of specific parts
+* Ask for key points or main ideas
+* Request analysis or insights
+* Click the speaker icon 🔊 to hear my responses
+
+Feel free to start by asking any question about the text!`}
+              </ReactMarkdown>
+              <button className="tts-button" onClick={() => handleSpeak("Hello! I'm your AI assistant, and I'm here to help you understand and analyze the extracted text. Here's what I can do for you: Ask me questions about the text, request a summary of the content, get explanations of specific parts, ask for key points or main ideas, request analysis or insights, and click the speaker icon to hear my responses. Feel free to start by asking any question about the text!")}>
+                <Volume2 size={16} />
+              </button>
+            </div>
+          </div>
         ) : (
           chatbotMessages.map((msg, index) => (
             <div key={index} className={`message ${msg.sender === "user" ? "user-message" : "chatbot-message"}`}>

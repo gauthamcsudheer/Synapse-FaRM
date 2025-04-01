@@ -4,6 +4,9 @@ import Home from "./components/Home";
 import MultilingualOCR from "./components/MultilingualOCR";
 import OCRResult from "./components/OCRResult";
 import GeminiChat from "./components/GeminiChat";
+import TranslatedText from "./components/TranslatedText";
+import AllDocumentsChat from "./components/AllDocumentsChat";
+import "./App.css";
 
 function App() {
   return (
@@ -13,6 +16,8 @@ function App() {
         <Route path="/ocr" element={<MultilingualOCR />} />
         <Route path="/ocr-result" element={<OCRResult />} />
         <Route path="/chat" element={<GeminiChat />} />
+        <Route path="/translated" element={<TranslatedText />} />
+        <Route path="/all-documents-chat" element={<AllDocumentsChat />} />
       </Routes>
     </Router>
   );

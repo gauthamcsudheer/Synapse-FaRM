@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import GeminiChat from "./GeminiChat";
-import { Volume2, ArrowLeft } from "lucide-react"; // Added ArrowLeft import
+import { Volume2, ArrowLeft, Globe } from "lucide-react"; 
 import "./OCRResult.css";
 
 const OCRResult = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { result, id } = location.state || { result: "", id: null };
+  const { result, id, language } = location.state || { result: "", id: null, language: "auto" };
 
   const [extractedTexts, setExtractedTexts] = useState(() => {
     return JSON.parse(localStorage.getItem("ocrHistory")) || [];
@@ -19,68 +19,69 @@ const OCRResult = () => {
     if (result && id) {
       const exists = extractedTexts.some((entry) => entry.id === id);
       if (!exists) {
-        const newExtractedText = { id, text: result };
+        const newExtractedText = { id, text: result, language };
         const updatedTexts = [newExtractedText, ...extractedTexts];
 
         setExtractedTexts(updatedTexts);
         localStorage.setItem("ocrHistory", JSON.stringify(updatedTexts));
       }
     }
-  }, [result, id]);
+  }, [result, id, language]);
 
-  const handleSpeak = () => {
+  const handleSpeak = (text) => {
     if (speaking) {
       window.speechSynthesis.cancel();
       setSpeaking(false);
       return;
     }
-  
-    const splitTextIntoChunks = (text, maxChunkLength = 200) => {
-      const sentences = text.match(/[^.!?]+[.!?]*/g) || [text]; // Split by sentence
-      const chunks = [];
-      let currentChunk = "";
-  
-      sentences.forEach((sentence) => {
-        if ((currentChunk + sentence).length > maxChunkLength) {
-          chunks.push(currentChunk.trim());
-          currentChunk = sentence;
-        } else {
-          currentChunk += " " + sentence;
-        }
-      });
-  
-      if (currentChunk) chunks.push(currentChunk.trim());
-      return chunks;
-    };
-  
-    const speakChunks = (chunks, index = 0) => {
-      if (index >= chunks.length) {
+
+    // Split text into sentences
+    const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+    let currentIndex = 0;
+
+    const speakNextSentence = () => {
+      if (currentIndex >= sentences.length) {
         setSpeaking(false);
         return;
       }
-  
-      const utterance = new SpeechSynthesisUtterance(chunks[index]);
+
+      const utterance = new SpeechSynthesisUtterance(sentences[currentIndex].trim());
       utterance.rate = 1.2;
-      
+
+      // Ensure voices are available
       const voices = window.speechSynthesis.getVoices();
-      const selectedVoice = voices.find((v) => v.name.includes("Google UK English Female"));
-      if (selectedVoice) utterance.voice = selectedVoice;
-  
-      utterance.onend = () => speakChunks(chunks, index + 1);
+      const selectedVoice = voices.find(v => v.name.includes("Google UK English Female"));
+
+      if (selectedVoice) {
+        utterance.voice = selectedVoice;
+      } else {
+        console.warn("Preferred voice not found. Using default voice.");
+      }
+
+      utterance.onend = () => {
+        currentIndex++;
+        speakNextSentence();
+      };
+
       utterance.onerror = (err) => {
         console.error("Speech synthesis error:", err);
         setSpeaking(false);
       };
-  
+
       window.speechSynthesis.speak(utterance);
     };
-  
-    const textChunks = splitTextIntoChunks(result);
-    if (textChunks.length > 0) {
+
+    // If voices are not available yet, wait for them to load
+    if (window.speechSynthesis.getVoices().length === 0) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        setSpeaking(true);
+        speakNextSentence();
+      };
+    } else {
       setSpeaking(true);
-      speakChunks(textChunks);
+      speakNextSentence();
     }
-  };  
+  };
 
   return (
     <div className="ocr-result-page">
@@ -90,13 +91,23 @@ const OCRResult = () => {
           <ArrowLeft />
         </button>
       </header>
+
       <div className="ocr-result-content">
         <div className="extracted-text-section">
           <div className="extracted-text-header">
             <h2>Extracted Text</h2>
-            <button className="tts-button" onClick={handleSpeak}>
-              <Volume2 size={20} className={speaking ? "active" : ""} />
-            </button>
+            <div className="button-group">
+              <button 
+                className="translate-button" 
+                onClick={() => navigate("/translated", { state: { result, id, language } })}
+              >
+                <Globe size={20} />
+                Translate Text
+              </button>
+              <button className="tts-button" onClick={() => handleSpeak(result)}>
+                <Volume2 size={20} className={speaking ? "active" : ""} />
+              </button>
+            </div>
           </div>
           <div className="ocr-text-container">
             <pre>{result}</pre>

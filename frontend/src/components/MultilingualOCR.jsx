@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, MessageSquare } from "lucide-react";
 import "./MultilingualOCR.css";
 
 const MultilingualOCR = () => {
@@ -74,7 +74,7 @@ const MultilingualOCR = () => {
           language: language
         };
         setExtractedTexts((prev) => [newExtractedText, ...prev]);
-        navigate("/ocr-result", { state: { result: data.text, id: newExtractedText.id } });
+        navigate("/ocr-result", { state: { result: data.text, id: newExtractedText.id, language: language } });
       } else {
         alert("Error: " + (data.error || "Failed to extract text."));
       }
@@ -88,9 +88,11 @@ const MultilingualOCR = () => {
   return (
     <div className="page-container">
       <div className="ocr-container">
-        <Link to="/" className="back-button">
-          <ArrowLeft />
-        </Link>
+        <div className="header-buttons">
+          <Link to="/" className="back-button">
+            <ArrowLeft />
+          </Link>
+        </div>
         <div className="upload-section">
           <h2 className="ocr-title">Document Text Extractor</h2>
           <p className="ocr-description">
@@ -149,6 +151,7 @@ const MultilingualOCR = () => {
                   <option value="eng">English</option>
                   <option value="spa">Spanish</option>
                   <option value="mal">Malayalam</option>
+                  <option value="fra">French</option>
                 </select>
               </div>
 
@@ -173,6 +176,10 @@ const MultilingualOCR = () => {
       {extractedTexts.length > 0 && (
         <aside className="history-section">
           <h3 className="history-title">Recent Extractions</h3>
+          <Link to="/all-documents-chat" className="all-docs-chat-button">
+            <MessageSquare size={20} />
+            Chat with All Documents
+          </Link>
           <div className="ocr-cards-container">
             {extractedTexts.map((item) => (
               <div key={item.id} className="ocr-card">
@@ -188,7 +195,7 @@ const MultilingualOCR = () => {
                   </div>
                   <button 
                     className="ocr-view-button" 
-                    onClick={() => navigate("/ocr-result", { state: { result: item.text, id: item.id } })}
+                    onClick={() => navigate("/ocr-result", { state: { result: item.text, id: item.id, language: item.language } })}
                   >
                     View Full Text
                   </button>

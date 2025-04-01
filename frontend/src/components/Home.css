@@ -194,17 +194,15 @@ button.secondary:hover {
 }
 
 .features {
-  padding: 6rem 2rem;
-  margin: 0 auto;
-  max-width: 1280px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  margin: 2rem 0;
 }
 
 .section-header {
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
 }
 
 .section-header h2 {
@@ -220,54 +218,38 @@ button.secondary:hover {
   margin: 0 auto;
 }
 
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  width: 100%;
-}
-
 .feature-card {
   background: white;
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: var(--shadow-md);
-  transition: all 0.3s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .feature-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  cursor: default;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-.feature-card .icon {
-  width: 4rem;
-  height: 4rem;
-  background: var(--color-background);
-  border-radius: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-primary);
-  margin-bottom: 1.5rem;
-  font-size: 1.5rem;
+.feature-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 1rem;
+  color: #4f46e5;
 }
 
 .feature-card h3 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: var(--color-text);
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  color: #1f2937;
 }
 
 .feature-card p {
-  color: var(--color-text-light);
-  line-height: 1.6;
-  font-size: 1.125rem;
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.875rem;
+  line-height: 1.5;
 }
 
 .use-cases {
@@ -283,7 +265,7 @@ button.secondary:hover {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
-  margin-top: 3rem;
+  /* margin-top: 3rem; */
 }
 
 .use-case-card {
@@ -332,6 +314,12 @@ button.secondary:hover {
 }
 
 /* Responsive Design */
+@media (max-width: 1200px) {
+  .features {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .hero {
     padding: 8rem 1.5rem 4rem;
@@ -363,5 +351,9 @@ button.secondary:hover {
 
   button {
     width: 100%;
+  }
+
+  .features {
+    grid-template-columns: 1fr;
   }
 }
