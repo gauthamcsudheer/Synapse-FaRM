@@ -58,10 +58,7 @@
 ### 7. Text-to-Speech
 
 - Real-time text-to-speech conversion
-- Support for multiple languages
 - Adjustable speech rate and pitch
-- Pause and resume functionality
-- Natural-sounding voice output
 
 ## Future Scope & Improvements
 
