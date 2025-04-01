@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -10,6 +10,15 @@ const GeminiChat = ({ extractedText, docId }) => {
   const [chatbotMessages, setChatbotMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [speakingMessage, setSpeakingMessage] = useState(null); // Track speaking message
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatbotMessages, isLoading]);
 
   useEffect(() => {
     if (!docId) return;
@@ -151,6 +160,7 @@ const GeminiChat = ({ extractedText, docId }) => {
             <span className="dot"></span>
           </div>
         )}
+        <div ref={messagesEndRef} />
       </div>
       <div className="chat-input">
         <textarea

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import GeminiChat from "./GeminiChat";
-import { Volume2 } from "lucide-react"; // Speaker Icon
+import { Volume2, ArrowLeft } from "lucide-react"; // Added ArrowLeft import
 import "./OCRResult.css";
 
 const OCRResult = () => {
@@ -87,7 +87,7 @@ const OCRResult = () => {
       <header className="ocr-result-header">
         <h1>OCR Results</h1>
         <button onClick={() => navigate("/ocr")} className="back-button">
-          Back to OCR
+          <ArrowLeft />
         </button>
       </header>
       <div className="ocr-result-content">
