@@ -1,14 +1,14 @@
-# Synapse FaRM - Features Documentation
+# Synapse - Features Documentation
 
 ## Current Features
 
 ### 1. Multilingual OCR
 
 - Support for multiple languages:
-  - English (eng)
-  - Spanish (spa)
-  - Malayalam (mal)
-  - French (fra)
+    - English (eng)
+    - Spanish (spa)
+    - Malayalam (mal)
+    - French (fra)
 - PDF and image file support
 - High-quality text extraction using Tesseract OCR
 - Automatic language detection
@@ -49,8 +49,8 @@
 ### 6. File Handling
 
 - Support for multiple file formats:
-  - PDF documents
-  - Image files (PNG, JPG, JPEG)
+    - PDF documents
+    - Image files (PNG, JPG, JPEG)
 - Drag and drop interface
 - File size validation
 - Error handling and user feedback
@@ -67,24 +67,24 @@
 
 ### 1. Enhanced OCR Capabilities
 
-- [ ] Add support for more languages
-- [ ] Implement handwriting recognition
-- [ ] Improve accuracy for complex layouts
-- [ ] Add support for mathematical equations
-- [ ] Implement table structure recognition
+- [ ]  Add support for more languages
+- [ ]  Implement handwriting recognition
+- [ ]  Improve accuracy for complex layouts
+- [ ]  Add support for mathematical equations
+- [ ]  Implement table structure recognition
 
 ### 2. Translation Enhancements
 
-- [ ] Add support for more target languages
-- [ ] Implement batch translation
-- [ ] Support for technical terminology
+- [ ]  Add support for more target languages
+- [ ]  Implement batch translation
+- [ ]  Support for technical terminology
 
 ### 3. Document Management
 
-- [ ] Cloud storage integration
-- [ ] Search functionality
+- [ ]  Cloud storage integration
+- [ ]  Search functionality
 
 ### 4. Security & Privacy
 
-- [ ] User authentication
-- [ ] Role-based access control
+- [ ]  User authentication
+- [ ]  Role-based access control
