@@ -101,27 +101,44 @@ const GeminiChat = ({ extractedText, docId }) => {
     setSpeakingMessage(text);
   
     const speakText = () => {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 1.2; // Adjust speed
+      // Split text into sentences or paragraphs
+      const chunks = text.split(/(?<=[.!?])\s+/);
+      let currentChunkIndex = 0;
+      
+      const speakNextChunk = () => {
+        if (currentChunkIndex >= chunks.length) {
+          setSpeakingMessage(null);
+          return;
+        }
+        
+        const utterance = new SpeechSynthesisUtterance(chunks[currentChunkIndex]);
+        utterance.rate = 1.05; // Adjust speed  
   
-      // Ensure voices are available
-      const voices = window.speechSynthesis.getVoices();
-      const selectedVoice = voices.find(v => v.name.includes("Google UK English Female"));
+        // Ensure voices are available
+        const voices = window.speechSynthesis.getVoices();
+        const selectedVoice = voices.find(v => v.name.includes("Google UK English Female"));
   
-      if (selectedVoice) {
-        utterance.voice = selectedVoice;
-      } else {
-        console.warn("Preferred voice not found. Using default voice.");
-      }
+        if (selectedVoice) {
+          utterance.voice = selectedVoice;
+        } else {
+          console.warn("Preferred voice not found. Using default voice.");
+        }
   
-      // Start speech
-      window.speechSynthesis.speak(utterance);
+        // Start speech
+        window.speechSynthesis.speak(utterance);
   
-      utterance.onend = () => setSpeakingMessage(null);
-      utterance.onerror = (err) => {
-        console.error("Speech synthesis error:", err);
-        setSpeakingMessage(null);
+        utterance.onend = () => {
+          currentChunkIndex++;
+          speakNextChunk();
+        };
+        
+        utterance.onerror = (err) => {
+          console.error("Speech synthesis error:", err);
+          setSpeakingMessage(null);
+        };
       };
+      
+      speakNextChunk();
     };
   
     // If voices are not available yet, wait for them to load

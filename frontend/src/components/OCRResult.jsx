@@ -46,7 +46,7 @@ const OCRResult = () => {
       }
 
       const utterance = new SpeechSynthesisUtterance(sentences[currentIndex].trim());
-      utterance.rate = 1.2;
+      utterance.rate = 1.05;
 
       // Ensure voices are available
       const voices = window.speechSynthesis.getVoices();

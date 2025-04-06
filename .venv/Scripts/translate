@@ -1,4 +1,4 @@
-#!d:\Synapse-FaRM - Copy\.venv\Scripts\python.exe
+#!d:\SynapseAI Final\.venv\Scripts\python.exe
 # -*- coding: utf-8 -*-
 import argparse
 import sys
